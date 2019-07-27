@@ -1,4 +1,4 @@
-package com.rabbitmq.exchange;
+package com.rabbitmq.nativ.exchange.direct;
 
 import com.rabbitmq.client.*;
 
@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 绑定多个队列
+ * 绑定单个队列
  */
-public class MulitBindConsumer {
+public class NormalConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         // 创建连接工厂，并初始化ip,端口，用户名和密码
@@ -24,19 +24,16 @@ public class MulitBindConsumer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(DirectProduct.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        // 声明一个随机队列
-        String queueName = channel.queueDeclare().getQueue();
-        System.out.println(queueName);
+        // 声明一个队列
+        String queueName = "focuserror";
+        // 队列名称，是否持久化，是否独享，是否删除，相关参数
+        channel.queueDeclare(queueName, false, false, false, null);
 
-        // 所有的日志严重性级别
-        String[] serverities = new String[]{"error", "info", "waring", "debug"};
-        for (String serverity : serverities) {
-            // 绑定交换机
-            String routeKey = serverity;
-            channel.queueBind(queueName, DirectProduct.EXCHANGE_NAME, routeKey); // 队列名称，交换机名称，路由键
-        }
         // 绑定交换机
-        System.out.println("【*】waiting for message....");
+        String routeKey = "error";
+        channel.queueBind(queueName, DirectProduct.EXCHANGE_NAME, routeKey); // 队列名称，交换机名称，路由键
+
+        System.out.println("waiting for message....");
 
         // 声明消费者
         final Consumer consumer = new DefaultConsumer(channel){

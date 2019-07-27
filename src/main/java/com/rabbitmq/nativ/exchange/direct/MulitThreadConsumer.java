@@ -1,4 +1,4 @@
-package com.rabbitmq.exchange;
+package com.rabbitmq.nativ.exchange.direct;
 
 import com.rabbitmq.client.*;
 
