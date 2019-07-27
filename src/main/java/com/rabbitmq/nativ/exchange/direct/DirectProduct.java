@@ -38,10 +38,10 @@ public class DirectProduct {
 
         String[] serverities = new String[]{"error", "info", "waring", "debug"};
 
-        for (String serverity : serverities) {
-            String msg = "Hello, RabbitMQ:" + (serverity);
+        for (String routeKey : serverities) {
+            String msg = "Hello, RabbitMQ:" + (routeKey);
 
-            channel.basicPublish(EXCHANGE_NAME, serverity, null, msg.getBytes());
+            channel.basicPublish(EXCHANGE_NAME, routeKey, null, msg.getBytes());
             System.out.println("send message: " + msg);
         }
 
